@@ -21,29 +21,29 @@ func (s H2payDepositStatus) Equal(value string) bool {
 
 // Predefined deposit status constants
 var (
-	Success  = H2payDepositStatus{"000", "Success", "Success"}
-	Failed   = H2payDepositStatus{"001", "Failed", "Failed"}
-	Approved = H2payDepositStatus{"006", "Approved", "Approved"}
-	Rejected = H2payDepositStatus{"007", "Rejected", "Rejected"}
-	Canceled = H2payDepositStatus{"008", "Canceled", "Canceled"}
-	Pending  = H2payDepositStatus{"009", "Pending", "Pending"}
+	H2payDepositStatusSuccess  = H2payDepositStatus{"000", "Success", "Success"}
+	H2payDepositStatusFailed   = H2payDepositStatus{"001", "Failed", "Failed"}
+	H2payDepositStatusApproved = H2payDepositStatus{"006", "Approved", "Approved"}
+	H2payDepositStatusRejected = H2payDepositStatus{"007", "Rejected", "Rejected"}
+	H2payDepositStatusCanceled = H2payDepositStatus{"008", "Canceled", "Canceled"}
+	H2payDepositStatusPending  = H2payDepositStatus{"009", "Pending", "Pending"}
 )
 
 // StatusFromCode returns a status from its code
 func StatusFromCode(code string) (H2payDepositStatus, bool) {
 	switch strings.ToUpper(code) {
-	case Success.Code:
-		return Success, true
-	case Failed.Code:
-		return Failed, true
-	case Approved.Code:
-		return Approved, true
-	case Rejected.Code:
-		return Rejected, true
-	case Canceled.Code:
-		return Canceled, true
-	case Pending.Code:
-		return Pending, true
+	case H2payDepositStatusSuccess.Code:
+		return H2payDepositStatusSuccess, true
+	case H2payDepositStatusFailed.Code:
+		return H2payDepositStatusFailed, true
+	case H2payDepositStatusApproved.Code:
+		return H2payDepositStatusApproved, true
+	case H2payDepositStatusRejected.Code:
+		return H2payDepositStatusRejected, true
+	case H2payDepositStatusCanceled.Code:
+		return H2payDepositStatusCanceled, true
+	case H2payDepositStatusPending.Code:
+		return H2payDepositStatusPending, true
 	default:
 		return H2payDepositStatus{}, false
 	}
