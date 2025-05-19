@@ -48,3 +48,45 @@ func StatusFromCode(code string) (H2payDepositStatus, bool) {
 		return H2payDepositStatus{}, false
 	}
 }
+
+//---------------------------------------
+
+// H2payWithdrawStatus represents the withdrawal status type
+type H2payWithdrawStatus struct {
+	Code string
+	Name string
+	Desc string
+}
+
+// Value returns the status code (implements similar functionality to getValue())
+func (s H2payWithdrawStatus) Value() string {
+	return s.Code
+}
+
+// Equal checks if the status code equals the given value (implements eq())
+func (s H2payWithdrawStatus) Equal(value string) bool {
+	return s.Code == value
+}
+
+// String implements fmt.Stringer interface
+func (s H2payWithdrawStatus) String() string {
+	return s.Name
+}
+
+// Predefined withdrawal status constants
+var (
+	H2payWithdrawSuccess = H2payWithdrawStatus{"000", "Success", "Success"}
+	H2payWithdrawFailed  = H2payWithdrawStatus{"001", "Failed", "Failed"}
+)
+
+// WithdrawStatusFromCode returns a status from its code
+func WithdrawStatusFromCode(code string) (H2payWithdrawStatus, bool) {
+	switch code {
+	case H2payWithdrawSuccess.Code:
+		return H2payWithdrawSuccess, true
+	case H2payWithdrawFailed.Code:
+		return H2payWithdrawFailed, true
+	default:
+		return H2payWithdrawStatus{}, false
+	}
+}
