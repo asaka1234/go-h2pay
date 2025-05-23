@@ -1,6 +1,9 @@
 package go_h2pay
 
-import "strings"
+import (
+	"github.com/samber/lo"
+	"strings"
+)
 
 // H2payDepositStatus represents the deposit status type
 type H2payDepositStatus struct {
@@ -89,4 +92,45 @@ func WithdrawStatusFromCode(code string) (H2payWithdrawStatus, bool) {
 	default:
 		return H2payWithdrawStatus{}, false
 	}
+}
+
+//==========================================
+
+type H2payLanguage struct {
+	Code string
+	Desc string
+}
+
+var (
+	H2payLanguageEnglish = H2payLanguage{"en-us", "English"}
+	H2payLanguageChinese = H2payLanguage{"zh-cn", "Chinese Simplified"}
+	H2payLanguageThai    = H2payLanguage{"th", "Thai"}
+	H2payLanguageMalay   = H2payLanguage{"ms-my", "Malay (Malaysia)"}
+	H2payLanguageVietnam = H2payLanguage{"vi-vn", "Vietnamese (Vietnam)"}
+	H2payLanguageIndo    = H2payLanguage{"id-id", "Indonesian"}
+	H2payLanguageBurmese = H2payLanguage{"bur", "Burmese"}
+	H2payLanguageTagalog = H2payLanguage{"fil-ph", "Tagalog (Philippines)"}
+	H2payLanguageHindi   = H2payLanguage{"hi-in", "Hindi (India)"}
+	H2payLanguageKhmer   = H2payLanguage{"km-kh", "Khmer (Cambodia)"}
+)
+
+var LegalLanguageList = []H2payLanguage{
+	H2payLanguageEnglish,
+	H2payLanguageChinese,
+	H2payLanguageThai,
+	H2payLanguageMalay,
+	H2payLanguageVietnam,
+	H2payLanguageIndo,
+	H2payLanguageBurmese,
+	H2payLanguageTagalog,
+	H2payLanguageHindi,
+	H2payLanguageKhmer,
+}
+
+// 用来检查入参的正确性
+func IsLanguageExist(code string) bool {
+	_, ok := lo.Find(LegalLanguageList, func(i H2payLanguage) bool {
+		return i.Code == code
+	})
+	return ok
 }
