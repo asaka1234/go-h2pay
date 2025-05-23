@@ -1,32 +1,32 @@
 package go_h2pay
 
 import (
-	"crypto/md5"
-	"encoding/hex"
+	"encoding/json"
 	"errors"
+	"github.com/asaka1234/go-h2pay/utils"
+	"github.com/mitchellh/mapstructure"
+	"log"
 )
 
 // 充值回调
 func (cli *Client) DepositCallback(req H2PayDepositBackReq, processor func(H2PayDepositBackReq) error) error {
 	//验证签名
-	key := cli.getDepositBackMD5(req)
-	if key != req.Key {
-		cli.logger.Warnf("H2PayBackService#depositBack#verify,req:%+v,key:%s", req, key)
-		return errors.New("key is wrong")
+	var params map[string]interface{}
+	mapstructure.Decode(req, &params)
+
+	// Verify signature
+	flag, err := utils.DepositBackVerify(params, cli.AccessKey)
+	if err != nil {
+		log.Printf("Signature verification error: %v", err)
+		return err
+	}
+	if !flag {
+		//签名校验失败
+		reqJson, _ := json.Marshal(req)
+		log.Printf("H2Pay back verify fail, req: %s", string(reqJson))
+		return errors.New("sign verify error")
 	}
 
 	//开始处理
 	return processor(req)
-}
-
-func (cli *Client) getDepositBackMD5(req H2PayDepositBackReq) string {
-	// Create the concatenated string in the exact same order as Java
-	encodeStr := req.Merchant + req.Reference + req.Customer + req.Amount +
-		req.Currency + req.Status + cli.AccessKey
-
-	// Generate MD5 hash
-	hash := md5.Sum([]byte(encodeStr))
-
-	// Convert to hex string
-	return hex.EncodeToString(hash[:])
 }

@@ -1,69 +1,44 @@
 package go_h2pay
 
 import (
-	"crypto/md5"
-	"encoding/hex"
+	"crypto/tls"
 	"encoding/xml"
-	"fmt"
-	"io/ioutil"
-	"net/http"
-	"strings"
+	"github.com/asaka1234/go-h2pay/utils"
+	"github.com/mitchellh/mapstructure"
 	"time"
 )
 
 // 提现
 func (cli *Client) Withdraw(req H2PayWithdrawReq) (*H2PayWithdrawRsp, error) {
-	key := cli.getWithdrawMD5(req)
-
 	rawURL := cli.WithdrawURL
 
-	// Build parameter list in the exact same order as Java
-	params := []string{
-		fmt.Sprintf("Key=%s", key),
-		fmt.Sprintf("ClientIP=%s", req.ClientIP),
-		fmt.Sprintf("ReturnURI=%s", req.ReturnURI),
-		fmt.Sprintf("MerchantCode=%s", req.MerchantCode),
-		fmt.Sprintf("TransactionID=%s", req.TransactionId),
-		fmt.Sprintf("CurrencyCode=%s", req.CurrencyCode),
-		fmt.Sprintf("MemberCode=%s", req.MemberCode),
-		fmt.Sprintf("Amount=%s", req.Amount),
-		fmt.Sprintf("TransactionDateTime=%s", req.TransactionDateTime),
-		fmt.Sprintf("BankCode=%s", req.BankCode),
-		fmt.Sprintf("toBankAccountName=%s", req.ToBankAccountName),
-		fmt.Sprintf("toBankAccountNumber=%s", req.ToBankAccountNumber),
-	}
+	loc := time.FixedZone("UTC", 8*3600)
 
-	// Join parameters with &
-	paramStr := strings.Join(params, "&")
+	//先转成map
+	var params map[string]interface{}
+	mapstructure.Decode(req, &params)
+	params["ReturnURL"] = cli.WithdrawCallbackURL
+	params["MerchantCode"] = cli.MerchantID
+	params["TransactionDateTime"] = time.Now().In(loc).Format("2006-01-02 03:04:05PM")
 
-	// Log request
-	cli.logger.Infof("H2PayService#withdraw, url: %s, param: %s", rawURL, paramStr)
+	// Generate signature
+	signStr := utils.WithdrawSign(params, cli.AccessKey)
+	params["Key"] = signStr
 
-	// Create HTTP client with timeout
-	client := &http.Client{
-		Timeout: time.Second * 30, // Set appropriate timeout
-	}
+	// 发送HTTP请求
+	resp, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
+		SetCloseConnection(true).
+		R().
+		SetHeaders(getHeaders()).
+		SetFormData(utils.ConvertToStringMap(params)).
+		Post(rawURL)
 
-	// Create POST request
-	resp, err := client.Post(
-		rawURL,
-		"application/x-www-form-urlencoded",
-		strings.NewReader(paramStr),
-	)
 	if err != nil {
-		cli.logger.Infof("H2PayService#withdraw error: %v", err)
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	// Read response body
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		cli.logger.Infof("H2PayService#withdraw read response error: %v", err)
+		cli.logger.Errorf("请求失败: %s", err.Error())
 		return nil, err
 	}
 
-	responseStr := string(body)
+	responseStr := string(resp.Body())
 	cli.logger.Infof("H2PayService#withdraw#rsp: %s", responseStr)
 
 	// Parse XML response (implement your parseXml function)
@@ -76,24 +51,7 @@ func (cli *Client) Withdraw(req H2PayWithdrawReq) (*H2PayWithdrawRsp, error) {
 	return result, nil
 }
 
-func (cli *Client) getWithdrawMD5(req H2PayWithdrawReq) string {
-	// Construct the encoded string in the exact same order as Java
-	encodeStr := req.MerchantCode + req.TransactionId + req.MemberCode +
-		req.Amount + req.CurrencyCode + req.DateTimeMd5 +
-		req.ToBankAccountNumber + cli.AccessKey
-
-	// Log before MD5 (matches Java log format)
-	cli.logger.Infof("H2PayService#MD5#withdraw#before, s: %s", encodeStr)
-
-	// Generate MD5 hash
-	hash := md5.Sum([]byte(encodeStr))
-	result := hex.EncodeToString(hash[:])
-
-	// Log after MD5 (matches Java log format)
-	cli.logger.Infof("H2PayService#MD5#withdraw#end, s: %s", result)
-
-	return result
-}
+//----------------------------------------------------
 
 type Payout struct {
 	XMLName    xml.Name `xml:"Payout"`

@@ -3,45 +3,64 @@ package go_h2pay
 // ----------pre generate-------------------------
 
 type H2PayDepositReq struct {
-	Merchant    string `json:"merchant"`
-	Currency    string `json:"currency"`
-	Customer    string `json:"customer"`
-	Reference   string `json:"reference"`
-	Key         string `json:"key"`
-	Amount      string `json:"amount"`
-	Datetime    string `json:"datetime"`
-	FrontURI    string `json:"frontURI"`
-	BackURI     string `json:"backURI"`
-	Bank        string `json:"bank"`
-	Language    string `json:"language"`
-	ClientIP    string `json:"clientIP"`
-	DateTimeMd5 string `json:"dateTimeMd5"`
+	Currency  string `json:"Currency" mapstructure:"Currency"`
+	Customer  string `json:"Customer" mapstructure:"Customer"`   //Merchant’s customer ID
+	Reference string `json:"Reference" mapstructure:"Reference"` //Transaction ID created by Merchant, 必须唯一
+	Amount    string `json:"Amount" mapstructure:"Amount"`       //法币是2位精度, VND, IDR,PPTP (THB currency)只允许整数, 不允许浮点数！
+	Bank      string `json:"Bank" mapstructure:"Bank"`           //Bank code provided by the Gateway
+	Language  string `json:"Language" mapstructure:"Language"`
+	ClientIP  string `json:"ClientIP" mapstructure:"ClientIP"`
+	//key是sdk帮计算的,所以不需要传
+	//Key string `json:"key"` //对请求内容做的一个签名(需要自行运算)
+	//商户号和回调地址等.sdk帮赋值
+	//Merchant string `json:"Merchant"`
+	//FrontURI  string `json:"FrontURI"`  //前端跳转地址
+	//BackURI   string `json:"BackURI"`   //后端notify地址 (callback)
+	//sdk设置好了
+	//Datetime  string `json:"Datetime" mapstructure:"Datetime"`   //YYYY-MM-DD hh:mm:sstt . e.g. 2012-05-01 08:04:00AM
+
 }
 
 type H2PayDepositRsp struct {
 	HTMLString string `json:"htmlString"`
 }
 
+// 充值的回调.
+type H2PayDepositBackReq struct {
+	Merchant      string `json:"Merchant" mapstructure:"Merchant"`
+	Reference     string `json:"Reference" mapstructure:"Reference"` //Transaction ID created by Merchant, 必须唯一
+	Currency      string `json:"Currency" mapstructure:"Currency"`
+	Amount        string `json:"Amount" mapstructure:"Amount"`
+	Language      string `json:"Language" mapstructure:"Language"`
+	Customer      string `json:"Customer" mapstructure:"Customer"`           //Merchant’s customer ID
+	Datetime      string `json:"Datetime" mapstructure:"Datetime"`           //YYYY-MM-DD hh:mm:sstt . e.g. 2012-05-01 08:04:00AM
+	StatementDate string `json:"StatementDate" mapstructure:"StatementDate"` //Datetime for the transaction processed. In UTC time
+	Note          string `json:"Note" mapstructure:"Note"`
+	Key           string `json:"Key" mapstructure:"Key"`       //加密的签名
+	Status        string `json:"Status" mapstructure:"Status"` //枚举: 000 成功, 001 失败, 006 approved, 007 Rejected,008 Canceled, 009 Pending
+	Deposit       string `json:"Deposit" mapstructure:"Deposit"`
+	ID            string `json:"ID" mapstructure:"ID"` //三方psp的订单id
+	ErrorCode     string `json:"ErrorCode" mapstructure:"ErrorCode"`
+}
+
 //--------------------------------------------------------
 
 type H2PayWithdrawReq struct {
-	Key                 string `json:"key"`
-	ClientIP            string `json:"clientIP"`
-	ReturnURI           string `json:"returnURI"`
-	MerchantCode        string `json:"merchantCode"`
-	TransactionId       string `json:"transactionId"`
-	CurrencyCode        string `json:"currencyCode"`
-	MemberCode          string `json:"memberCode"`
-	Amount              string `json:"amount"`
-	TransactionDateTime string `json:"transactionDateTime"`
-	BankCode            string `json:"bankCode"`
-	ToBankAccountName   string `json:"toBankAccountName"`
-	ToBankAccountNumber string `json:"toBankAccountNumber"`
-	CustomerName        string `json:"customerName"`
-	CustomerEmail       string `json:"customerEmail"`
-	CustomerMobile      string `json:"customerMobile"`
-	IFSC                string `json:"IFSC"`
-	DateTimeMd5         string `json:"dateTimeMd5"`
+	ClientIP            string `json:"ClientIP" mapstructure:"ClientIP"`
+	TransactionID       string `json:"TransactionID" mapstructure:"TransactionID"` //商户的订单号
+	CurrencyCode        string `json:"CurrencyCode" mapstructure:"CurrencyCode"`   //CNY, THB..
+	MemberCode          string `json:"MemberCode" mapstructure:"MemberCode"`       //Merchant’s customer ID
+	Amount              string `json:"Amount" mapstructure:"Amount"`
+	BankCode            string `json:"BankCode" mapstructure:"BankCode"`
+	ToBankAccountName   string `json:"toBankAccountName" mapstructure:"toBankAccountName"`
+	ToBankAccountNumber string `json:"toBankAccountNumber" mapstructure:"toBankAccountNumber"`
+	//以下都由sdk补充
+	//Key          string `json:"Key" mapstructure:"Key"`                   //签名
+	//ReturnURL    string `json:"ReturnURL" mapstructure:"ReturnURL"`       //回调地址  TODO  要看下是URI还是URL
+	//MerchantCode string `json:"MerchantCode" mapstructure:"MerchantCode"` //psp的商户号
+	//sdk给补充
+	//TransactionDateTime string `json:"TransactionDateTime" mapstructure:"TransactionDateTime"` //YYYY-MM-DD hh:mm:sstt . e.g. 2012-05-01 08:04:00AM
+
 }
 
 type H2PayWithdrawRsp struct {
@@ -51,33 +70,15 @@ type H2PayWithdrawRsp struct {
 
 //---------------------------------------------
 
-type H2PayDepositBackReq struct {
-	Merchant      string `json:"Merchant"`
-	Reference     string `json:"Reference"`
-	Currency      string `json:"Currency"`
-	Amount        string `json:"Amount"`
-	Language      string `json:"Language"`
-	Customer      string `json:"Customer"`
-	Datetime      string `json:"Datetime"`
-	StatementDate string `json:"StatementDate"`
-	Note          string `json:"Note"`
-	Key           string `json:"Key"`
-	Status        string `json:"Status"`
-	Deposit       string `json:"Deposit"`
-	ID            string `json:"ID"`
-	ErrorCode     string `json:"ErrorCode"`
-}
-
 type H2PayWithdrawBackReq struct {
-	MerchantCode        string `json:"MerchantCode"`
-	TransactionID       string `json:"TransactionID"`
-	CurrencyCode        string `json:"CurrencyCode"`
-	Amount              string `json:"Amount"`
-	TransactionDatetime string `json:"TransactionDatetime"`
-	Key                 string `json:"Key"`
-	Status              string `json:"Status"`
-	Message             string `json:"Message"`
-	MemberCode          string `json:"MemberCode"`
-	ID                  string `json:"ID"`
-	PayoutFee           string `json:"PayoutFee"`
+	MerchantCode        string `json:"MerchantCode" mapstructure:"MerchantCode"`
+	TransactionID       string `json:"TransactionID" mapstructure:"TransactionID"`
+	CurrencyCode        string `json:"CurrencyCode" mapstructure:"CurrencyCode"`
+	Amount              string `json:"Amount" mapstructure:"Amount"`
+	TransactionDatetime string `json:"TransactionDatetime" mapstructure:"TransactionDatetime"` //YYYY-MM-DD hh:mm:sstt . e.g. 2012-05-01 08:04:00AM
+	Key                 string `json:"Key" mapstructure:"Key"`                                 //签名
+	Status              string `json:"Status" mapstructure:"Status"`                           //枚举: 000 成功, 001 失败, 006 approved, 007 Rejected,008 Canceled, 009
+	Message             string `json:"Message" mapstructure:"Message"`
+	MemberCode          string `json:"MemberCode" mapstructure:"MemberCode"`
+	ID                  string `json:"ID" mapstructure:"ID"` //Payout ID 三方psp的订单id
 }

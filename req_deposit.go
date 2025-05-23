@@ -1,67 +1,47 @@
 package go_h2pay
 
 import (
-	"bytes"
-	"crypto/md5"
-	"encoding/hex"
-	"fmt"
-	"io/ioutil"
+	"crypto/tls"
+	"github.com/asaka1234/go-h2pay/utils"
+	"github.com/mitchellh/mapstructure"
 	"log"
-	"net/http"
-	"strings"
+	"time"
 )
 
 // 下单
 func (cli *Client) Deposit(req H2PayDepositReq) (*H2PayDepositRsp, error) {
 
-	key := cli.getDepositMD5(req)
-
 	rawURL := cli.DepositURL
 
-	// Build parameter list
-	params := []string{
-		fmt.Sprintf("Merchant=%s", req.Merchant),
-		fmt.Sprintf("Currency=%s", req.Currency),
-		fmt.Sprintf("Customer=%s", req.Customer),
-		fmt.Sprintf("Reference=%s", req.Reference),
-		fmt.Sprintf("Key=%s", key),
-		fmt.Sprintf("Amount=%s", req.Amount),
-		fmt.Sprintf("Datetime=%s", req.Datetime),
-		fmt.Sprintf("FrontURI=%s", req.FrontURI),
-		fmt.Sprintf("BackURI=%s", req.BackURI),
-		fmt.Sprintf("Bank=%s", req.Bank),
-		fmt.Sprintf("Language=%s", req.Language),
-		fmt.Sprintf("ClientIP=%s", req.ClientIP),
-	}
+	loc := time.FixedZone("UTC", 8*3600)
 
-	// Join parameters with &
-	paramStr := strings.Join(params, "&")
+	//先转成map
+	var params map[string]interface{}
+	mapstructure.Decode(req, &params)
+	params["Merchant"] = cli.MerchantID
+	params["FrontURI"] = cli.DepositFeBackURL
+	params["BackURI"] = cli.DepositCallbackURL
+	params["Datetime"] = time.Now().In(loc).Format("2006-01-02 03:04:05PM")
 
-	// Log request
-	cli.logger.Infof("H2PayService#deposit, url: %s, param: %s", rawURL, paramStr)
+	// Generate signature
+	signStr := utils.DepositSign(params, cli.AccessKey)
+	params["Key"] = signStr
 
-	// Make HTTP POST request
-	resp, err := http.Post(rawURL,
-		"application/x-www-form-urlencoded",
-		bytes.NewBufferString(paramStr))
+	// 发送HTTP请求
+	resp, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
+		SetCloseConnection(true).
+		R().
+		SetHeaders(getHeaders()).
+		SetFormData(utils.ConvertToStringMap(params)).
+		Post(rawURL)
+
 	if err != nil {
-		cli.logger.Errorf("请求失败:%s", err.Error())
-	}
-	defer resp.Body.Close()
-	if err != nil {
-		log.Printf("H2PayService#deposit error: %v", err)
-		return nil, err
-	}
-
-	// Read response body
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Printf("H2PayService#deposit read response error: %v", err)
+		cli.logger.Errorf("请求失败: %s", err.Error())
 		return nil, err
 	}
 
 	// Log response
-	responseStr := string(body)
+	responseStr := string(resp.Body())
 	log.Printf("H2PayService#deposit#rsp: %s", responseStr)
 
 	// Build response struct
@@ -70,22 +50,4 @@ func (cli *Client) Deposit(req H2PayDepositReq) (*H2PayDepositRsp, error) {
 	}
 
 	return rsp, nil
-}
-
-func (cli *Client) getDepositMD5(req H2PayDepositReq) string {
-	// Construct the encoded string
-	encodeStr := req.Merchant + req.Reference + req.Customer + req.Amount +
-		req.Currency + req.DateTimeMd5 + cli.AccessKey + req.ClientIP
-
-	// Log before MD5
-	log.Printf("H2PayService#MD5#deposit#before, s: %s", encodeStr)
-
-	// Generate MD5 hash
-	hash := md5.Sum([]byte(encodeStr))
-	result := hex.EncodeToString(hash[:])
-
-	// Log after MD5
-	log.Printf("H2PayService#MD5#deposit#end, s: %s", result)
-
-	return result
 }
