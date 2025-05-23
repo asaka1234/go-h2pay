@@ -56,7 +56,7 @@ type H2PayWithdrawReq struct {
 	ToBankAccountNumber string `json:"toBankAccountNumber" mapstructure:"toBankAccountNumber"`
 	//以下都由sdk补充
 	//Key          string `json:"Key" mapstructure:"Key"`                   //签名
-	//ReturnURL    string `json:"ReturnURL" mapstructure:"ReturnURL"`       //回调地址  TODO  要看下是URI还是URL
+	//ReturnURI    string `json:"ReturnURI" mapstructure:"ReturnURI"`       //回调地址
 	//MerchantCode string `json:"MerchantCode" mapstructure:"MerchantCode"` //psp的商户号
 	//sdk给补充
 	//TransactionDateTime string `json:"TransactionDateTime" mapstructure:"TransactionDateTime"` //YYYY-MM-DD hh:mm:sstt . e.g. 2012-05-01 08:04:00AM

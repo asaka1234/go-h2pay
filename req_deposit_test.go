@@ -41,16 +41,12 @@ func TestDeposit(t *testing.T) {
 func GenDepositRequestDemo() H2PayDepositReq {
 
 	return H2PayDepositReq{
-		//Merchant:  MERCHANT_ID,
 		Currency:  "MYR",
 		Customer:  "220099",     //uid
 		Reference: "1609032335", //outNo
-		//Key         string `json:"key"`
-		Amount: "1.00",
-		//FrontURI:    "https://usercenter.cptinternational.com/",
-		//BackURI:     "https://usercenter.cptinternational.com/",
-		Bank:     "MCC", //必须要是存在的,不然报错
-		Language: "en-us",
-		ClientIP: "128.199.171.73",
+		Amount:    "1.00",
+		Bank:      "MBB", //必须要是存在的,不然报错
+		Language:  "en-us",
+		ClientIP:  "128.199.171.73",
 	}
 }
