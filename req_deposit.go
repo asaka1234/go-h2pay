@@ -11,20 +11,20 @@ import (
 // 下单
 func (cli *Client) Deposit(req H2PayDepositReq) (*H2PayDepositRsp, error) {
 
-	rawURL := cli.DepositURL
+	rawURL := cli.Params.DepositUrl
 
 	loc := time.FixedZone("UTC", 8*3600)
 
 	//先转成map
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
-	params["Merchant"] = cli.MerchantID
-	params["FrontURI"] = cli.DepositFeBackURL
-	params["BackURI"] = cli.DepositCallbackURL
+	params["Merchant"] = cli.Params.MerchantId
+	params["FrontURI"] = cli.Params.DepositFeBackUrl
+	params["BackURI"] = cli.Params.DepositCallbackUrl
 	params["Datetime"] = time.Now().In(loc).Format("2006-01-02 03:04:05PM")
 
 	// Generate signature
-	signStr := utils.DepositSign(params, cli.AccessKey)
+	signStr := utils.DepositSign(params, cli.Params.AccessKey)
 	params["Key"] = signStr
 
 	// 发送HTTP请求

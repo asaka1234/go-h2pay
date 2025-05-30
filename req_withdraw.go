@@ -10,19 +10,19 @@ import (
 
 // 提现
 func (cli *Client) Withdraw(req H2PayWithdrawReq) (*H2PayWithdrawRsp, error) {
-	rawURL := cli.WithdrawURL
+	rawURL := cli.Params.WithdrawUrl
 
 	loc := time.FixedZone("UTC", 8*3600)
 
 	//先转成map
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
-	params["ReturnURI"] = cli.WithdrawCallbackURL
-	params["MerchantCode"] = cli.MerchantID
+	params["ReturnURI"] = cli.Params.WithdrawCallbackUrl
+	params["MerchantCode"] = cli.Params.MerchantId
 	params["TransactionDateTime"] = time.Now().In(loc).Format("2006-01-02 03:04:05PM")
 
 	// Generate signature
-	signStr := utils.WithdrawSign(params, cli.AccessKey)
+	signStr := utils.WithdrawSign(params, cli.Params.AccessKey)
 	params["Key"] = signStr
 
 	// 发送HTTP请求

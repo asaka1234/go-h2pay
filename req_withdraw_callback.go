@@ -15,7 +15,7 @@ func (cli *Client) WithdrawCallback(req H2PayWithdrawBackReq, processor func(H2P
 	mapstructure.Decode(req, &params)
 
 	// Verify signature
-	flag, err := utils.WithdrawBackVerify(params, cli.AccessKey)
+	flag, err := utils.WithdrawBackVerify(params, cli.Params.AccessKey)
 	if err != nil {
 		log.Printf("Signature verification error: %v", err)
 		return err

@@ -6,29 +6,15 @@ import (
 )
 
 type Client struct {
-	MerchantID string // merchantId
-	AccessKey  string // accessKey
-
-	DepositURL         string
-	DepositCallbackURL string //sever回调地址
-	DepositFeBackURL   string //前端跳转地址
-
-	WithdrawURL         string
-	WithdrawCallbackURL string
+	Params H2PayInitParams
 
 	ryClient *resty.Client
 	logger   utils.Logger
 }
 
-func NewClient(logger utils.Logger, merchantID string, accessKey, depositURL, withdrawURL, depositCallbackURL, depositFeBackURL, withdrawCallbackURL string) *Client {
+func NewClient(logger utils.Logger, params H2PayInitParams) *Client {
 	return &Client{
-		MerchantID:          merchantID,
-		AccessKey:           accessKey,
-		DepositURL:          depositURL,
-		WithdrawURL:         withdrawURL,
-		DepositCallbackURL:  depositCallbackURL,
-		DepositFeBackURL:    depositFeBackURL,
-		WithdrawCallbackURL: withdrawCallbackURL,
+		Params: params,
 
 		ryClient: resty.New(), //client实例
 		logger:   logger,

@@ -15,7 +15,7 @@ func (cli *Client) DepositCallback(req H2PayDepositBackReq, processor func(H2Pay
 	mapstructure.Decode(req, &params)
 
 	// Verify signature
-	flag, err := utils.DepositBackVerify(params, cli.AccessKey)
+	flag, err := utils.DepositBackVerify(params, cli.Params.AccessKey)
 	if err != nil {
 		log.Printf("Signature verification error: %v", err)
 		return err
