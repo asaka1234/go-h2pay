@@ -20,7 +20,7 @@ func (cli *Client) Deposit(req H2PayDepositReq) (*H2PayDepositRsp, error) {
 	mapstructure.Decode(req, &params)
 	params["Merchant"] = cli.Params.MerchantId
 	params["FrontURI"] = cli.Params.DepositFeBackUrl
-	params["BackURI"] = cli.Params.DepositCallbackUrl
+	params["BackURI"] = cli.Params.DepositBackUrl
 	params["Datetime"] = time.Now().In(loc).Format("2006-01-02 03:04:05PM")
 
 	// Generate signature

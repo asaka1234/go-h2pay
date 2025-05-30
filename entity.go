@@ -4,11 +4,11 @@ type H2PayInitParams struct {
 	MerchantId string `json:"merchantId" mapstructure:"merchantId" config:"merchantId"` // merchantId
 	AccessKey  string `json:"accessKey" mapstructure:"accessKey" config:"accessKey"`    // accessKey
 
-	DepositUrl          string `json:"depositUrl" mapstructure:"depositUrl" config:"depositUrl"`
-	DepositCallbackUrl  string `json:"depositCallbackUrl" mapstructure:"depositCallbackUrl" config:"depositCallbackUrl"` //sever回调地址
-	DepositFeBackUrl    string `json:"depositFeBackUrl" mapstructure:"depositFeBackUrl" config:"depositFeBackUrl"`       //前端跳转地址
-	WithdrawUrl         string `json:"withdrawUrl" mapstructure:"withdrawUrl" config:"withdrawUrl"`
-	WithdrawCallbackUrl string `json:"withdrawCallbackUrl" mapstructure:"withdrawCallbackUrl" config:"withdrawCallbackUrl"`
+	DepositUrl       string `json:"depositUrl" mapstructure:"depositUrl" config:"depositUrl"`
+	DepositBackUrl   string `json:"depositBackUrl" mapstructure:"depositBackUrl" config:"depositBackUrl"`       //sever回调地址
+	DepositFeBackUrl string `json:"depositFeBackUrl" mapstructure:"depositFeBackUrl" config:"depositFeBackUrl"` //前端跳转地址
+	WithdrawUrl      string `json:"withdrawUrl" mapstructure:"withdrawUrl" config:"withdrawUrl"`
+	WithdrawBackUrl  string `json:"WithdrawBackUrl" mapstructure:"WithdrawBackUrl" config:"WithdrawBackUrl"`
 }
 
 // ----------pre generate-------------------------

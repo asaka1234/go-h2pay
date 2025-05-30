@@ -17,7 +17,7 @@ func (cli *Client) Withdraw(req H2PayWithdrawReq) (*H2PayWithdrawRsp, error) {
 	//先转成map
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
-	params["ReturnURI"] = cli.Params.WithdrawCallbackUrl
+	params["ReturnURI"] = cli.Params.WithdrawBackUrl
 	params["MerchantCode"] = cli.Params.MerchantId
 	params["TransactionDateTime"] = time.Now().In(loc).Format("2006-01-02 03:04:05PM")
 
