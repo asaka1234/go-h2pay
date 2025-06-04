@@ -4,6 +4,8 @@ import (
 	"crypto/tls"
 	"github.com/asaka1234/go-h2pay/utils"
 	"github.com/mitchellh/mapstructure"
+	"github.com/shopspring/decimal"
+	"github.com/spf13/cast"
 	"log"
 	"time"
 )
@@ -18,6 +20,11 @@ func (cli *Client) Deposit(req H2PayDepositReq) (*H2PayDepositRsp, error) {
 	//先转成map
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
+
+	//以此确保amount是2位精度!
+	amount := decimal.NewFromFloat(cast.ToFloat64(params["Amount"])) //转为decimal
+	params["Amount"] = amount.StringFixed(2)
+
 	params["Merchant"] = cli.Params.MerchantId
 	params["FrontURI"] = cli.Params.DepositFeBackUrl
 	params["BackURI"] = cli.Params.DepositBackUrl

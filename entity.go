@@ -17,7 +17,7 @@ type H2PayDepositReq struct {
 	Currency  string `json:"Currency" mapstructure:"Currency"`
 	Customer  string `json:"Customer" mapstructure:"Customer"`   //Merchant’s customer ID
 	Reference string `json:"Reference" mapstructure:"Reference"` //Transaction ID created by Merchant, 必须唯一
-	Amount    string `json:"Amount" mapstructure:"Amount"`       //法币是2位精度, VND, IDR,PPTP (THB currency)只允许整数, 不允许浮点数！
+	Amount    string `json:"Amount" mapstructure:"Amount"`       //法币是2位精度的浮点数, VND, IDR,PPTP (THB currency)只允许整数,比如12.00. 禁止12.15
 	Bank      string `json:"Bank" mapstructure:"Bank"`           //https://docs.google.com/spreadsheets/d/19ylX6-2XNkeke3HdYyT9m5lCV0PLnBmXC2f5SAjIye4/edit?gid=0#gid=0
 	Language  string `json:"Language" mapstructure:"Language"`
 	ClientIP  string `json:"ClientIP" mapstructure:"ClientIP"`

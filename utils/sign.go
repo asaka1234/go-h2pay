@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cast"
 	"log"
 	"strings"
+	"time"
 )
 
 // MD5({Merchant}{Reference}{Customer}{Amount}{Currency}{Datetime}{SecurityCode}{ClientIP})
@@ -19,8 +20,15 @@ func DepositSign(params map[string]interface{}, key string) string {
 	for _, k := range signKeyList {
 		if k != "SecurityCode" {
 			value := cast.ToString(params[k])
+
+			if k == "Datetime" {
+				t, _ := time.Parse("2006-01-02 03:04:05PM", value)
+				value = t.Format("20060102150405")
+			}
+			//fmt.Printf("%s=>%s\n", k, value)
 			sb.WriteString(value)
 		} else {
+			//fmt.Printf("%s=>%s\n", k, key)
 			sb.WriteString(key)
 		}
 	}
@@ -89,19 +97,26 @@ func DepositBackVerify(params map[string]interface{}, signKey string) (bool, err
 	return signature.(string) == currentSignature, nil
 }
 
-// MD5({Merchant}{Reference}{Customer}{Amount}{Currency}{Datetime}{SecurityCode}{ClientIP})
+// MD5({MerchantCode}{TransactionId}{MemberCode}{Amount}{CurrencyCode}){TransactionDateTime}){ToBankAccountNumber}){SecurityCode}))
 func WithdrawSign(params map[string]interface{}, key string) string {
 
 	//参与签名的key
-	signKeyList := []string{"MerchantCode", "TransactionID", "MemberCode", "Amount", "CurrencyCode", "TransactionDatetime", "toBankAccountNumber", "SecurityCode"}
+	signKeyList := []string{"MerchantCode", "TransactionID", "MemberCode", "Amount", "CurrencyCode", "TransactionDateTime", "toBankAccountNumber", "SecurityCode"}
 
 	//拼凑字符串
 	var sb strings.Builder
 	for _, k := range signKeyList {
 		if k != "SecurityCode" {
 			value := cast.ToString(params[k])
+
+			if k == "TransactionDateTime" {
+				t, _ := time.Parse("2006-01-02 03:04:05PM", value)
+				value = t.Format("20060102150405")
+			}
+			//fmt.Printf("%s=>%s\n", k, value)
 			sb.WriteString(value)
 		} else {
+			//fmt.Printf("%s=>%s\n", k, key)
 			sb.WriteString(key)
 		}
 	}
