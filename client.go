@@ -6,14 +6,14 @@ import (
 )
 
 type Client struct {
-	Params H2PayInitParams
+	Params *H2PayInitParams
 
 	ryClient  *resty.Client
 	debugMode bool //是否调试模式
 	logger    utils.Logger
 }
 
-func NewClient(logger utils.Logger, params H2PayInitParams) *Client {
+func NewClient(logger utils.Logger, params *H2PayInitParams) *Client {
 	return &Client{
 		Params: params,
 
