@@ -38,6 +38,7 @@ func (cli *Client) Withdraw(req H2PayWithdrawReq) (*H2PayWithdrawRsp, error) {
 		R().
 		SetHeaders(getHeaders()).
 		SetFormData(utils.ConvertToStringMap(params)).
+		SetDebug(cli.debugMode).
 		Post(rawURL)
 
 	if err != nil {

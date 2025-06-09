@@ -40,6 +40,7 @@ func (cli *Client) Deposit(req H2PayDepositReq) (*H2PayDepositRsp, error) {
 		R().
 		SetHeaders(getHeaders()).
 		SetFormData(utils.ConvertToStringMap(params)).
+		SetDebug(cli.debugMode).
 		Post(rawURL)
 
 	if err != nil {
