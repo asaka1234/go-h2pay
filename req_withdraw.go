@@ -3,8 +3,10 @@ package go_h2pay
 import (
 	"crypto/tls"
 	"encoding/xml"
+	"fmt"
 	"github.com/asaka1234/go-h2pay/utils"
 	"github.com/mitchellh/mapstructure"
+	"github.com/samber/lo"
 	"github.com/shopspring/decimal"
 	"github.com/spf13/cast"
 	"time"
@@ -13,6 +15,15 @@ import (
 // 提现
 func (cli *Client) Withdraw(req H2PayWithdrawReq) (*H2PayWithdrawRsp, error) {
 	rawURL := cli.Params.WithdrawUrl
+
+	//----------------------判断bank code的正确性------------------
+	_, ok := lo.Find(WithdrawBankCodes, func(i PayAsiaBankCode) bool {
+		return i.Code == req.BankCode
+	})
+	if !ok {
+		return nil, fmt.Errorf("bank code %s error", req.BankCode)
+	}
+	//---------------------------------------------------------
 
 	loc := time.FixedZone("UTC", 8*3600)
 
@@ -46,8 +57,16 @@ func (cli *Client) Withdraw(req H2PayWithdrawReq) (*H2PayWithdrawRsp, error) {
 		return nil, err
 	}
 
+	if resp.StatusCode() != 200 {
+		return nil, fmt.Errorf("status code: %d", resp.StatusCode())
+	}
+
+	if resp.Error() != nil {
+		//反序列化错误会在此捕捉
+		return nil, fmt.Errorf("%v, body:%s", resp.Error(), resp.Body())
+	}
+
 	responseStr := string(resp.Body())
-	cli.logger.Infof("H2PayService#withdraw#rsp: %s", responseStr)
 
 	// Parse XML response (implement your parseXml function)
 	result, err := cli.parseXml(responseStr)
