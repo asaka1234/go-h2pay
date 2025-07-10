@@ -143,7 +143,7 @@ type PayAsiaBankCode struct {
 	Name     string `json:"name"`
 }
 
-var BankCodes = []PayAsiaBankCode{
+var DepositBankCodes = []PayAsiaBankCode{
 	{"MYR", "AFF", "Affin Bank"},
 	{"MYR", "ALB", "Alliance Bank Malaysia Berhad"},
 	{"MYR", "AMB", "AmBank Group"},
@@ -189,4 +189,64 @@ var BankCodes = []PayAsiaBankCode{
 	{"IDR", "BNI", "Bank Negara Indonesia"},
 	{"IDR", "PMTB", "Permata Bank"},
 	{"IDR", "PANIN", "Panin Bank"},
+}
+
+// 出金
+var WithdrawBankCodes = []PayAsiaBankCode{
+	{"MYR", "AFF", "Affin Bank"},
+	{"MYR", "ALB", "Alliance Bank"},
+	{"MYR", "AMB", "AM Bank"},
+	{"MYR", "BSN", "Bank Simpanan National"},
+	{"MYR", "CIMB", "CIMB Bank"},
+	{"MYR", "CITI", "Citi bank"},
+	{"MYR", "HLB", "Hong Leong Bank"},
+	{"MYR", "HSBC", "HSBC Bank"},
+	{"MYR", "MBB", "Maybank"},
+	{"MYR", "OCBC", "OCBC Bank"},
+	{"MYR", "PBB", "Public Bank"},
+	{"MYR", "RHB", "RHB Bank"},
+	{"MYR", "UOB", "UOB Bank"},
+	{"MYR", "SCTB", "Standard Chartered Bank"},
+
+	{"THB", "BBL", "Bangkok Bank"},
+	{"THB", "BOA", "Bank Of Ayudhya"},
+	{"THB", "CIMBT", "CIMB Thai"},
+	{"THB", "KKR", "KasiKorn Bank"},
+	{"THB", "KNK", "Kiatnakin Bank"},
+	{"THB", "KTB", "KTB Net Bank"},
+	{"THB", "SCB", "Siam Commercial Bank"},
+	{"THB", "TMB", "TMBThananachart Bank (TTB)"},
+
+	{"VND", "ACB", "Asia Commercial Bank  ACB"},
+	{"VND", "AGB", "Agribank AGB"},
+	{"VND", "BIDV", "Bank for Investment and Development of Vietnam BIDV"},
+	{"VND", "DAB", "DongA Joint Stock Commercial Bank DAB"},
+	{"VND", "EXIM", "Eximbank Vietnam EXIM"},
+	{"VND", "MTMB", "Maritime Bank MTMB"},
+	{"VND", "MB", "Military Commercial Joint Stock Bank MB"},
+	{"VND", "SACOM", "Sacom Bank SACOM"},
+	{"VND", "SCMB", "SAIGON Bank SCMB"},
+	{"VND", "TCB", "Techcom Bank TCB"},
+	{"VND", "TPB", "Tien Phong Bank TPB"},
+	{"VND", "VCB", "Vietcom Bank VCB"},
+	{"VND", "VIB", "Vietnam International Bank VIB"},
+	{"VND", "VPB", "VP Bank VPB"},
+	{"VND", "VTB", "Vietin Bank VTB"},
+
+	{"IDR", "BCA", "Bank Central Asia"},
+	{"IDR", "BDI", "Bank Danamon Indonesia"},
+	{"IDR", "BNI", "Bank Negara Indonesia"},
+	{"IDR", "BRI", "Bank Rakyat Indonesia"},
+	{"IDR", "CIMBN", "CIMB Niaga"},
+	{"IDR", "MBBI", "Bank Maybank Indonesia"},
+	{"IDR", "MDR", "Bank Mandiri"},
+
+	{"PHP", "BDO", "Banco De Oro"},
+	{"PHP", "BPI", "Bank of the Philippine Islands"},
+	{"PHP", "MTB", "MetroBank"},
+	{"PHP", "LBP", "Land Bank of the Philippines"},
+	{"PHP", "PNB", "Philippine National Bank"},
+	{"PHP", "RCBC", "Rizal Commercial Banking Corporation"},
+	{"PHP", "SBC", "Security Bank Corporation"},
+	{"PHP", "UBP", "Union Bank of Philippines"},
 }
