@@ -134,3 +134,59 @@ func IsLanguageExist(code string) bool {
 	})
 	return ok
 }
+
+//----------------------------------------
+
+type PayAsiaBankCode struct {
+	Currency string `json:"currency"`
+	Code     string `json:"code"`
+	Name     string `json:"name"`
+}
+
+var BankCodes = []PayAsiaBankCode{
+	{"MYR", "AFF", "Affin Bank"},
+	{"MYR", "ALB", "Alliance Bank Malaysia Berhad"},
+	{"MYR", "AMB", "AmBank Group"},
+	{"MYR", "BIMB", "Bank Islam Malaysia Berhad"},
+	{"MYR", "BSN", "Bank Simpanan Nasional"},
+	{"MYR", "CIMB", "CIMB Bank Berhad"},
+	{"MYR", "HLB", "Hong Leong Bank Berhad"},
+	{"MYR", "HSBC", "HSBC Bank (Malaysia) Berhad"},
+	{"MYR", "MBB", "Maybank Berhad"},
+	{"MYR", "OCBC", "OCBC Bank"},
+	{"MYR", "PBB", "Public Bank Berhad"},
+	{"MYR", "RHB", "RHB Banking Group"},
+	{"MYR", "UOB", "United Overseas Bank (Malaysia) Bhd"},
+	{"MYR", "FPX", "FPX Bank Selection Page"},
+	{"MYR", "AFFFPX", "Affin Bank (FPX)"},
+	{"MYR", "AGROBFPX", "Agrobank (FPX)"},
+	{"MYR", "ALBFPX", "Alliance Bank (FPX)"},
+	{"MYR", "AMBFPX", "AmBank (FPX)"},
+	{"MYR", "BIMBFPX", "Bank Islam (FPX)"},
+	{"MYR", "BKRFPX", "Bank Rakyat (FPX)"},
+	{"MYR", "BMMBFPX", "Bank Muamalat (FPX)"},
+	{"MYR", "BOCMFPX", "Bank of China (FPX)"},
+	{"MYR", "BSNFPX", "BSN Bank (FPX)"},
+	{"MYR", "CIMBFPX", "CIMB Bank (FPX)"},
+	{"MYR", "HLBFPX", "Hong Leong Bank (FPX)"},
+	{"MYR", "HSBCFPX", "HSBC (FPX)"},
+	{"MYR", "KFHFPX", "Kuwait Finance House (FPX)"},
+	{"MYR", "MBBFPX", "Maybank (FPX)"},
+	{"MYR", "OCBCFPX", "OCBC (FPX)"},
+	{"MYR", "PBBFPX", "Public Bank (FPX)"},
+	{"MYR", "RHBFPX", "RHB Bank (FPX)"},
+	{"MYR", "SCTBFPX", "Standard Chartered Bank (FPX)"},
+	{"MYR", "UOBFPX", "UOB (FPX)"},
+
+	{"VND", "BIDV", "Bank for Investment and Development of Vietnam"},
+	{"VND", "DAB", "DongA Bank"},
+	{"VND", "SACOM", "Sacombank"},
+	{"VND", "TCB", "Techcombank"},
+	{"VND", "VCB", "Vietcombank"},
+	{"VND", "VTB", "Vietinbank"},
+
+	{"IDR", "BCA", "Bank Central Asia"},
+	{"IDR", "BNI", "Bank Negara Indonesia"},
+	{"IDR", "PMTB", "Permata Bank"},
+	{"IDR", "PANIN", "Panin Bank"},
+}
