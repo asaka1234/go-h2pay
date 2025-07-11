@@ -137,13 +137,13 @@ func IsLanguageExist(code string) bool {
 
 //----------------------------------------
 
-type PayAsiaBankCode struct {
+type H2PayBankCode struct {
 	Currency string `json:"currency"`
 	Code     string `json:"code"`
 	Name     string `json:"name"`
 }
 
-var DepositBankCodes = []PayAsiaBankCode{
+var DepositBankCodes = []H2PayBankCode{
 	{"MYR", "AFF", "Affin Bank"},
 	{"MYR", "ALB", "Alliance Bank Malaysia Berhad"},
 	{"MYR", "AMB", "AmBank Group"},
@@ -192,7 +192,7 @@ var DepositBankCodes = []PayAsiaBankCode{
 }
 
 // 出金
-var WithdrawBankCodes = []PayAsiaBankCode{
+var WithdrawBankCodes = []H2PayBankCode{
 	{"MYR", "AFF", "Affin Bank"},
 	{"MYR", "ALB", "Alliance Bank"},
 	{"MYR", "AMB", "AM Bank"},

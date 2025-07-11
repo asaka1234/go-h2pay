@@ -17,8 +17,8 @@ func (cli *Client) Withdraw(req H2PayWithdrawReq) (*H2PayWithdrawRsp, error) {
 	rawURL := cli.Params.WithdrawUrl
 
 	//----------------------判断bank code的正确性------------------
-	_, ok := lo.Find(WithdrawBankCodes, func(i PayAsiaBankCode) bool {
-		return i.Code == req.BankCode
+	_, ok := lo.Find(WithdrawBankCodes, func(i H2PayBankCode) bool {
+		return i.Code == req.BankCode && i.Currency == req.CurrencyCode
 	})
 	if !ok {
 		return nil, fmt.Errorf("bank code %s error", req.BankCode)
