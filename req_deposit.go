@@ -17,7 +17,7 @@ func (cli *Client) Deposit(req H2PayDepositReq) (*H2PayDepositRsp, error) {
 	rawURL := cli.Params.DepositUrl
 
 	//----------------------判断bank code的正确性------------------
-	_, ok := lo.Find(DepositBankCodes, func(i PayAsiaBankCode) bool {
+	_, ok := lo.Find(DepositBankCodes, func(i H2PayBankCode) bool {
 		return i.Code == req.Bank
 	})
 	if !ok {
