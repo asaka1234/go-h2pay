@@ -94,7 +94,7 @@ func DepositBackVerify(params map[string]interface{}, signKey string) (bool, err
 	currentSignature := DepositBackSign(params, signKey)
 
 	// Compare signatures
-	return signature.(string) == currentSignature, nil
+	return strings.ToUpper(signature.(string)) == strings.ToUpper(currentSignature), nil
 }
 
 // MD5({MerchantCode}{TransactionId}{MemberCode}{Amount}{CurrencyCode}){TransactionDateTime}){ToBankAccountNumber}){SecurityCode}))
@@ -182,5 +182,5 @@ func WithdrawBackVerify(params map[string]interface{}, signKey string) (bool, er
 	currentSignature := WithdrawBackSign(params, signKey)
 
 	// Compare signatures
-	return signature.(string) == currentSignature, nil
+	return strings.ToUpper(signature.(string)) == strings.ToUpper(currentSignature), nil
 }
