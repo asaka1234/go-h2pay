@@ -144,6 +144,7 @@ type H2PayBankCode struct {
 }
 
 var DepositBankCodes = []H2PayBankCode{
+	{"MYR", "DUITNOW", "Duitnow"}, //qrcode
 	{"MYR", "AFF", "Affin Bank"},
 	{"MYR", "ALB", "Alliance Bank Malaysia Berhad"},
 	{"MYR", "AMB", "AmBank Group"},
@@ -180,6 +181,7 @@ var DepositBankCodes = []H2PayBankCode{
 		{"MYR", "UOBFPX", "UOB (FPX)"},
 	*/
 
+	{"VND", "VIETQR", "VietQRpay"}, //qrcode
 	{"VND", "BIDV", "Bank for Investment and Development of Vietnam"},
 	{"VND", "DAB", "DongA Bank"},
 	{"VND", "SACOM", "Sacombank"},
@@ -187,6 +189,7 @@ var DepositBankCodes = []H2PayBankCode{
 	{"VND", "VCB", "Vietcombank"},
 	{"VND", "VTB", "Vietinbank"},
 
+	{"IDR", "QRIS", "QRIS"}, //qrcode
 	{"IDR", "BCA", "Bank Central Asia"},
 	{"IDR", "BNI", "Bank Negara Indonesia"},
 	{"IDR", "PMTB", "Permata Bank"},
