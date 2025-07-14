@@ -68,14 +68,14 @@ func DepositBackSign(params map[string]interface{}, key string) string {
 	signStr := sb.String()
 
 	// Log before MD5
-	log.Printf("H2PayService#MD5#deposit#before, s: %s", signStr)
+	log.Printf("H2PayService#MD5#depositBack#before, s: %s", signStr)
 
 	// Generate MD5 hash
 	hash := md5.Sum([]byte(signStr))
 	result := hex.EncodeToString(hash[:])
 
 	// Log after MD5
-	log.Printf("H2PayService#MD5#deposit#end, s: %s", result)
+	log.Printf("H2PayService#MD5#depositBack#end, s: %s", result)
 
 	return result
 }
@@ -123,14 +123,14 @@ func WithdrawSign(params map[string]interface{}, key string) string {
 	signStr := sb.String()
 
 	// Log before MD5
-	log.Printf("H2PayService#MD5#deposit#before, s: %s", signStr)
+	log.Printf("H2PayService#MD5#withdraw#before, s: %s", signStr)
 
 	// Generate MD5 hash
 	hash := md5.Sum([]byte(signStr))
 	result := hex.EncodeToString(hash[:])
 
 	// Log after MD5
-	log.Printf("H2PayService#MD5#deposit#end, s: %s", result)
+	log.Printf("H2PayService#MD5#withdraw#end, s: %s", result)
 
 	return result
 }
@@ -156,14 +156,14 @@ func WithdrawBackSign(params map[string]interface{}, key string) string {
 	signStr := sb.String()
 
 	// Log before MD5
-	log.Printf("H2PayService#MD5#deposit#before, s: %s", signStr)
+	log.Printf("H2PayService#MD5#withdrawBack#before, s: %s", signStr)
 
 	// Generate MD5 hash
 	hash := md5.Sum([]byte(signStr))
 	result := hex.EncodeToString(hash[:])
 
 	// Log after MD5
-	log.Printf("H2PayService#MD5#deposit#end, s: %s", result)
+	log.Printf("H2PayService#MD5#withdrawBack#end, s: %s", result)
 
 	return result
 }
