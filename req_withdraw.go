@@ -54,7 +54,7 @@ func (cli *Client) Withdraw(req H2PayWithdrawReq) (*H2PayWithdrawRsp, error) {
 		Post(rawURL)
 
 	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
-	cli.logger.Infof("PSPResty#h2pay#withdraw->%+v", string(restLog))
+	cli.logger.Infof("PSPResty#h2pay#withdraw->%s", string(restLog))
 
 	if err != nil {
 		cli.logger.Errorf("请求失败: %s", err.Error())

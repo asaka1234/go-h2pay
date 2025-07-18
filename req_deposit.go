@@ -56,7 +56,7 @@ func (cli *Client) Deposit(req H2PayDepositReq) (*H2PayDepositRsp, error) {
 
 	//print log
 	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
-	cli.logger.Infof("PSPResty#h2pay#deposit->%+v", string(restLog))
+	cli.logger.Infof("PSPResty#h2pay#deposit->%s", string(restLog))
 
 	if err != nil {
 		cli.logger.Errorf("请求失败: %s", err.Error())
