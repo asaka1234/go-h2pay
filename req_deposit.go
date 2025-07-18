@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/asaka1234/go-h2pay/utils"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/lo"
 	"github.com/shopspring/decimal"
@@ -52,6 +53,10 @@ func (cli *Client) Deposit(req H2PayDepositReq) (*H2PayDepositRsp, error) {
 		SetFormData(utils.ConvertToStringMap(params)).
 		SetDebug(cli.debugMode).
 		Post(rawURL)
+
+	//print log
+	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
+	cli.logger.Infof("PSPResty#h2pay#deposit->%+v", string(restLog))
 
 	if err != nil {
 		cli.logger.Errorf("请求失败: %s", err.Error())

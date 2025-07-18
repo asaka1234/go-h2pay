@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"github.com/asaka1234/go-h2pay/utils"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/lo"
 	"github.com/shopspring/decimal"
@@ -51,6 +52,9 @@ func (cli *Client) Withdraw(req H2PayWithdrawReq) (*H2PayWithdrawRsp, error) {
 		SetFormData(utils.ConvertToStringMap(params)).
 		SetDebug(cli.debugMode).
 		Post(rawURL)
+
+	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
+	cli.logger.Infof("PSPResty#h2pay#withdraw->%+v", string(restLog))
 
 	if err != nil {
 		cli.logger.Errorf("请求失败: %s", err.Error())
