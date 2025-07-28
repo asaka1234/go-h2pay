@@ -18,12 +18,14 @@ func (cli *Client) Withdraw(req H2PayWithdrawReq) (*H2PayWithdrawRsp, error) {
 	rawURL := cli.Params.WithdrawUrl
 
 	//----------------------判断bank code的正确性------------------
-	_, ok := lo.Find(WithdrawBankCodes, func(i H2PayBankCode) bool {
-		return i.Code == req.BankCode && i.Currency == req.CurrencyCode
+	item, ok := lo.Find(WithdrawBankCodes, func(i H2PayBankCode) bool {
+		// 有可能传过来的是bank name, 所以兼容一下
+		return i.Currency == req.CurrencyCode && (i.Code == req.BankCode || i.Name == req.BankCode)
 	})
 	if !ok {
 		return nil, fmt.Errorf("bank code %s error", req.BankCode)
 	}
+	req.BankCode = item.Code
 	//---------------------------------------------------------
 
 	loc := time.FixedZone("UTC", 8*3600)

@@ -18,12 +18,14 @@ func (cli *Client) Deposit(req H2PayDepositReq) (*H2PayDepositRsp, error) {
 	rawURL := cli.Params.DepositUrl
 
 	//----------------------判断bank code的正确性------------------
-	_, ok := lo.Find(DepositBankCodes, func(i H2PayBankCode) bool {
-		return i.Code == req.Bank
+	item, ok := lo.Find(DepositBankCodes, func(i H2PayBankCode) bool {
+		//有可能传过来的是bank name, 所以兼容一下
+		return i.Currency == req.Currency && (i.Code == req.Bank || i.Name == req.Bank)
 	})
 	if !ok {
 		return nil, fmt.Errorf("bank code %s error", req.Bank)
 	}
+	req.Bank = item.Code
 	//---------------------------------------------------------
 
 	loc := time.FixedZone("UTC", 8*3600)
