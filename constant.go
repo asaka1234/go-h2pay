@@ -207,6 +207,17 @@ func GetDepositBankCodeByName(name string, ccy string) string {
 	return ""
 }
 
+// 依据code拿到name
+func GetDepositBankNameByCode(code string, ccy string) string {
+	bingo, ok := lo.Find(WithdrawBankCodes, func(i H2PayBankCode) bool {
+		return i.Code == code && i.Currency == ccy
+	})
+	if ok {
+		return bingo.Name
+	}
+	return ""
+}
+
 // 出金
 var WithdrawBankCodes = []H2PayBankCode{
 	{"MYR", "AFF", "Affin Bank"},
@@ -274,6 +285,17 @@ func GetWithdrawalBankCodeByName(name string, ccy string) string {
 	})
 	if ok {
 		return bingo.Code
+	}
+	return ""
+}
+
+// 依据code拿到name
+func GetWithdrawalBankNameByCode(code string, ccy string) string {
+	bingo, ok := lo.Find(WithdrawBankCodes, func(i H2PayBankCode) bool {
+		return i.Code == code && i.Currency == ccy
+	})
+	if ok {
+		return bingo.Name
 	}
 	return ""
 }
