@@ -196,6 +196,17 @@ var DepositBankCodes = []H2PayBankCode{
 	{"IDR", "PANIN", "Panin Bank"},
 }
 
+// 用name去反查code
+func GetDepositBankCodeByName(name string, ccy string) string {
+	bingo, ok := lo.Find(DepositBankCodes, func(i H2PayBankCode) bool {
+		return i.Name == name && i.Currency == ccy
+	})
+	if ok {
+		return bingo.Code
+	}
+	return ""
+}
+
 // 出金
 var WithdrawBankCodes = []H2PayBankCode{
 	{"MYR", "AFF", "Affin Bank"},
@@ -254,4 +265,15 @@ var WithdrawBankCodes = []H2PayBankCode{
 	{"PHP", "RCBC", "Rizal Commercial Banking Corporation"},
 	{"PHP", "SBC", "Security Bank Corporation"},
 	{"PHP", "UBP", "Union Bank of Philippines"},
+}
+
+// 用name去反查code
+func GetWithdrawalBankCodeByName(name string, ccy string) string {
+	bingo, ok := lo.Find(WithdrawBankCodes, func(i H2PayBankCode) bool {
+		return i.Name == name && i.Currency == ccy
+	})
+	if ok {
+		return bingo.Code
+	}
+	return ""
 }
