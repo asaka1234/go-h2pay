@@ -144,7 +144,7 @@ type H2PayBankCode struct {
 }
 
 var DepositBankCodes = []H2PayBankCode{
-	{"MYR", "DUITNOW", "Duitnow"}, //qrcode
+	//{"MYR", "DUITNOW", "Duitnow"}, //qrcode
 	{"MYR", "AFF", "Affin Bank"},
 	{"MYR", "ALB", "Alliance Bank Malaysia Berhad"},
 	{"MYR", "AMB", "AmBank Group"},
