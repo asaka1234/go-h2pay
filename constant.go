@@ -158,7 +158,7 @@ var DepositBankCodes = []H2PayBankCode{
 	{"MYR", "PBB", "Public Bank Berhad"},
 	{"MYR", "RHB", "RHB Banking Group"},
 	{"MYR", "UOB", "United Overseas Bank (Malaysia) Bhd"},
-	{"MYR", "FPX", "FPX Bank Selection Page"},
+	//{"MYR", "FPX", "FPX Bank Selection Page"},  // 是个FPX的选项，不是一个银行名称
 	/*
 		{"MYR", "AFFFPX", "Affin Bank (FPX)"},
 		{"MYR", "AGROBFPX", "Agrobank (FPX)"},
